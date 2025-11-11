@@ -5,12 +5,14 @@ import {
   HttpStatus,
   HttpException,
   BadRequestException,
+  Catch,
 } from '@nestjs/common';
 import { CustomLoggerService } from '@nx-nest/common';
 
 @Injectable()
 export class ExceptionsFilter implements ExceptionFilter {
   constructor(protected logger: CustomLoggerService) {}
+
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const req = ctx.getRequest();

@@ -1,6 +1,7 @@
 export enum LogLevelEnum {
   'info',
   'error',
+  'warn',
 }
 
 export type LogLevelModel = keyof typeof LogLevelEnum;
@@ -11,6 +12,8 @@ export function getLogLevel(logLevel: LogLevelEnum): number {
       return 1;
     case LogLevelEnum.error:
       return 2;
+    case LogLevelEnum.warn:
+      return 3;
     default:
       return 1;
   }
@@ -41,7 +44,7 @@ export interface ClassModel {
 }
 
 export class LogRecordModel {
-  level: any;
+  level: LogLevelModel;
   message: LogMessageModel;
   context: ContextModel;
   class: ClassModel;

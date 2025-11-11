@@ -12,9 +12,11 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "node-json-color-stringify": "^1.1.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.0.0",
