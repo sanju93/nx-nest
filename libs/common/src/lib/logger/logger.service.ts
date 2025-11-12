@@ -13,15 +13,23 @@ import { Request } from 'express';
 import * as jsonColorStringify from 'node-json-color-stringify';
 
 function writeLog(logLevel: LogLevelModel, logRecord: LogRecordModel) {
+  if (logRecord.message.error && logRecord.message?.error instanceof Error) {
+    const err = logRecord.message.error;
+    logRecord.message.error = {
+      name: err.name,
+      stack: err.stack,
+      message: err.message,
+    };
+  }
   switch (logLevel) {
     case 'info':
       console.info(
-        `${jsonColorStringify.colorStringify(logRecord, undefined, 2)}`
+        `${jsonColorStringify.colorStringify(logRecord, undefined, 2)}\n`
       );
       break;
     case 'error':
       console.error(
-        `${jsonColorStringify.colorStringify(logRecord, undefined, 2)}`
+        `${jsonColorStringify.colorStringify(logRecord, undefined, 2)}\n`
       );
       break;
   }
@@ -51,6 +59,7 @@ export class CustomLoggerService implements LoggerService {
   // verbose?(message: LogMessageModel, ...optionalParams: any[]) {
   //   console.log(message);
   // }
+
   setLogLevels?(levels: LogLevel[]) {
     console.log(levels, 'set log level');
   }
@@ -124,9 +133,9 @@ export class InternalLogger {
 
   #sendLogLevel(logLevel: LogLevelModel, message: LogMessageModel) {
     const logModel: LogRecordModel = {
+      level: logLevel,
       class: this.class,
       context: this.#context,
-      level: logLevel,
       message: message,
     };
 

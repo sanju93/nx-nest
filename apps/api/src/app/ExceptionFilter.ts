@@ -13,20 +13,23 @@ import { CustomLoggerService } from '@nx-nest/common';
 export class ExceptionsFilter implements ExceptionFilter {
   constructor(protected logger: CustomLoggerService) {}
 
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: Partial<Error>, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const req = ctx.getRequest();
     const res = ctx.getResponse();
+
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
     const errResponse =
       exception instanceof HttpException
         ? exception.getResponse()
         : 'Internal Server Error';
+
     this.logger.error({
-      message: host.switchToHttp().getRequest().url,
+      line: host.switchToHttp().getRequest().url,
     });
 
     if (exception instanceof BadRequestException) {
@@ -41,6 +44,12 @@ export class ExceptionsFilter implements ExceptionFilter {
       response: errResponse,
       message: exception.message,
       statusCode: status,
+    });
+
+    this.logger.error({
+      line: 'Exception',
+      error: exception,
+      data: { body: req.body },
     });
   }
 }

@@ -20,8 +20,10 @@ export function getLogLevel(logLevel: LogLevelEnum): number {
 }
 
 export interface LogMessageModel {
+  line?: string;
   data?: any;
-  message: string;
+  error?: any;
+  timeMs?: number;
 }
 
 export class ContextModel {
