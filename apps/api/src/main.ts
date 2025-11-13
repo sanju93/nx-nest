@@ -9,7 +9,10 @@ import { CustomLoggerService, LoggingInterceptor } from '@nx-nest/common';
 import { AppModule } from './app/app.module';
 import { ExceptionsFilter } from './app/ExceptionFilter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
+// import * as Session from 'cookie-session';
+import * as Session from 'express-session';
+import * as passport from 'passport';
+const MongoStore = require('connect-mongo');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new CustomLoggerService(),
@@ -17,6 +20,23 @@ async function bootstrap() {
   const logger = app.get(CustomLoggerService);
 
   // app.useLogger(logger);
+
+  app.use(
+    Session({
+      secret: 'notesApp',
+      name: 'session',
+      cookie: {
+        maxAge: 3600 * 24 * 1000,
+        secure: false,
+        httpOnly: true,
+      },
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+        mongoUrl: 'mongodb://mongodb:27017/Session',
+      }),
+    })
+  );
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalFilters(new ExceptionsFilter(logger));
@@ -24,7 +44,8 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
 
   // swagger setup
-
+  app.use(passport.initialize());
+  app.use(passport.session());
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Notes API')
     .setVersion('1.0')

@@ -16,6 +16,7 @@ export class LoggingInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const loggerService = new InternalLogger(context.getClass().name);
     const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
     loggerService.setContextFromRequest(req);
     const now = Date.now();
 
