@@ -39,3 +39,6 @@ testem.log
 Thumbs.db
 
 docker/mongodb/data
+./docker-compose.yaml
+core.*
+./ecosystem.config.js

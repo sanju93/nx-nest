@@ -1,0 +1,36 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/node/dockerfile
+    container_name: "nx-nest-node"
+    volumes:
+      - ./:/var/www
+    ports:
+      - "3000:3000"
+    tty: true
+    links:
+      - mongodb
+      - frontend
+    depends_on:
+      - mongodb
+      - frontend
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    container_name: "nx-nest-mongodb"
+    volumes:
+      - ./docker/mongodb/data:/data/db
+
+  frontend:
+    build:
+      context: ../nx-frontend
+      dockerfile: ./docker/node/dockerFile
+    container_name: "nx-frontend-node"
+    volumes:
+      - ../nx-frontend:/var/www
+    ports:
+      - "4200:4200"
+    tty: true
