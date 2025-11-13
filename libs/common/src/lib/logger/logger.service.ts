@@ -17,8 +17,8 @@ function writeLog(logLevel: LogLevelModel, logRecord: LogRecordModel) {
     const err = logRecord.message.error;
     logRecord.message.error = {
       name: err.name,
-      stack: err.stack,
       message: err.message,
+      stack: err.stack,
     };
   }
   switch (logLevel) {
@@ -37,10 +37,10 @@ function writeLog(logLevel: LogLevelModel, logRecord: LogRecordModel) {
 
 Injectable();
 export class CustomLoggerService implements LoggerService {
-  #logLevel: LogLevelEnum = LogLevelEnum.info;
+  // #logLevel: LogLevelEnum = LogLevelEnum.info;
   #className = 'CustomLoggerService';
 
-  #internalLogger = new InternalLogger('CustomLoggerService');
+  #internalLogger = new InternalLogger(this.#className);
 
   constructor() {}
 
@@ -106,8 +106,6 @@ export class InternalLogger {
       name: className,
       type: classNameSplit[classNameSplit.length - 1],
     };
-
-    console.log(this.class);
   }
 
   log(logLevel: LogLevelModel, message: LogMessageModel): Promise<void> {
@@ -136,7 +134,7 @@ export class InternalLogger {
       level: logLevel,
       class: this.class,
       context: this.#context,
-      message: message,
+      message,
     };
 
     writeLog(logLevel, logModel);

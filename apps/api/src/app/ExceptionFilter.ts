@@ -5,7 +5,6 @@ import {
   HttpStatus,
   HttpException,
   BadRequestException,
-  Catch,
 } from '@nestjs/common';
 import { CustomLoggerService } from '@nx-nest/common';
 
@@ -27,10 +26,6 @@ export class ExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getResponse()
         : 'Internal Server Error';
-
-    this.logger.error({
-      line: host.switchToHttp().getRequest().url,
-    });
 
     if (exception instanceof BadRequestException) {
       res.status(422).json({
