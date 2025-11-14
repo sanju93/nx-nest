@@ -17,6 +17,7 @@
     "paths": {
       "@nx-nest/auth": ["libs/auth/src/index.ts"],
       "@nx-nest/common": ["libs/common/src/index.ts"],
+      "@nx-nest/db": ["libs/db/src/index.ts"],
       "@nx-nest/notes": ["libs/notes/src/index.ts"]
     }
   },
