@@ -42,3 +42,4 @@ docker/mongodb/data
 /docker-compose.yaml
 core.*
 /ecosystem.config.js
+.env

@@ -5,7 +5,7 @@ import { createConnection, Connection } from 'mongoose';
 export class MongoConnectionService implements OnModuleInit, OnModuleDestroy {
   #connection: Connection;
   onModuleInit() {
-    this.#connection = createConnection('mongodb://mongodb:27017/');
+    this.#connection = createConnection('mongodb://mongodb:27017/NotesApp');
   }
 
   onModuleDestroy() {

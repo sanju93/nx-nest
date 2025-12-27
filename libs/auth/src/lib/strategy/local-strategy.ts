@@ -8,13 +8,13 @@ import { PassportSerializer } from '@nestjs/passport';
 export class PassportLocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor() {
     super({
-      usernameField: 'userName',
+      usernameField: 'email',
       passwordField: 'password',
     });
   }
 
-  async validate(userName: string, password: string) {
-    return { userName: 'sanjay' };
+  async validate(email: string, password: string) {
+    return { email, password };
   }
 }
 
@@ -22,12 +22,12 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy, 'local') {
 export class SessionSerializer extends PassportSerializer {
   serializeUser(user: any, done: Function) {
     console.log(user);
-    done(null, user.userName); // store user.id in session
+    done(null, user.email); // store user.id in session
   }
 
   async deserializeUser(payload: any, done: Function) {
     // In real apps, fetch from DB
-    const user = { username: payload };
+    const user = { username: payload.email };
     done(null, user);
   }
 }
